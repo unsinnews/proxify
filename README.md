@@ -23,7 +23,7 @@
   </p>
 
   <h4>
-    <a href="https://proxify.poixe.com">官方网站</a>
+    <a href="https://proxify.poixe.com" target="_blank">演示网站</a>
     <span> · </span>
     <a href="#-快速开始">快速开始</a>
     <span> · </span>
@@ -116,7 +116,7 @@ async function main() {
 main();
 ```
 
-## 🖥️ 部署教程
+## 🖥️ 部署教程 <a id="-部署教程"></a>
 
 Proxify 提供多种部署方式。无论您选择哪种方式，请先完成准备工作。
 
@@ -338,7 +338,7 @@ go build -o ./bin/proxify .
 ./bin/proxify
 ```
 
-## 🗺️ 广泛兼容的 API 端点
+## 🗺️ 广泛兼容的 API 端点 <a id="-广泛兼容的 API 端点"></a>
 
 Proxify 支持代理任何 HTTP 服务。以下是一些预设的、经过优化的常用 AI 服务路由示例。
 
