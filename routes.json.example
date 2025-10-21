@@ -101,6 +101,12 @@
       "description": "Nebius Official API Endpoint",
       "path": "/nebius",
       "target": "https://api.studio.nebius.com"
+    },
+    {
+      "name": "Poixe",
+      "description": "Poixe AI Official API Endpoint",
+      "path": "/poixe",
+      "target": "https://api.poixe.com"
     }
   ]
 }

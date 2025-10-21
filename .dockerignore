@@ -1,0 +1,33 @@
+# keep config
+!routes.json
+!.env
+
+# go
+/bin
+/log/
+*.log
+
+# go build output
+*.exe
+*.out
+*.test
+*.tmp
+*.bak
+vendor/
+
+# node
+web/node_modules/
+web/.npm/
+web/.cache/
+web/.next/
+web/dist/
+web/coverage/
+
+# note
+/_note
+
+# github
+.git
+.gitignore
+README.md
+LICENSE

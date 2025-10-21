@@ -35,7 +35,7 @@ export function Header() {
               <a
                 key={item.href}
                 href={item.href}
-                className="hover:text-black dark:hover:text-white transition-colors"
+                className="hover:text-black dark:hover:text-white transition-colors text-sm"
               >
                 {item.label}
               </a>
