@@ -352,17 +352,6 @@ Proxify 支持代理任何 HTTP 服务。以下是一些预设的、经过优化
 
 _注意：实际可用路径取决于您的 `routes.json` 配置文件。_
 
-### 🔍 查看当前演示站支持的端口
-
-您可以通过以下接口实时查看演示站当前配置的代理端口列表：
-
-```bash
-GET https://proxify.poixe.com/api/routes
-````
-
-👉 [点击查看演示站当前支持的端口](https://proxify.poixe.com/api/routes)
-
-
 ## 🤝 贡献
 
 我们欢迎并感谢所有形式的贡献！无论是提交 Issue、发起 Pull Request，还是改进文档，都是对社区的巨大支持。
