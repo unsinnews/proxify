@@ -1,13 +1,70 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/x.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Proxify</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/x.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Proxify</title>
+  <meta name="description" content="An open-source, lightweight, and self-hosted reverse proxy gateway for AI APIs" />
+  <meta name="keywords"
+    content="reverse proxy gateway, AI API proxy, multi-model API gateway, unified AI API entry, self-hosted AI API router, LLM stream proxy, model router for AI APIs, Go reverse proxy, Golang API gateway, self-hosted API proxy, Docker AI gateway, open source proxy for AI APIs, SSE streaming gateway, tail latency optimization proxy, Gin reverse proxy server, proxy OpenAI API locally, best AI API gateway for developers, route Claude and DeepSeek via proxy, run AI APIs on one port, reduce latency AI API streaming" />
+  <meta name="author" content="Poixe Team" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://proxify.poixe.com/" />
+  <meta property="og:title" content="Proxify" />
+  <meta property="og:description"
+    content="An open-source, lightweight, and self-hosted reverse proxy gateway for AI APIs" />
+  <meta property="og:image" content="https://poixe.com/og.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@poixeai" />
+  <meta name="twitter:title" content="Poixe AI" />
+  <meta name="twitter:description"
+    content="An open-source, lightweight, and self-hosted reverse proxy gateway for AI APIs" />
+  <meta name="twitter:image" content="https://poixe.com/og.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Proxify",
+    "url": "https://proxify.poixe.com/",
+    "description": "An open-source, lightweight, and self-hosted reverse proxy gateway for AI APIs",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Poixe Team",
+      "url": "https://poixe.com/"
+    }
+  }
+  </script>
+
+  <!-- Matomo -->
+  <script>
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function () {
+      var u = "//matomo.gptocean.com/";
+      _paq.push(['setTrackerUrl', u + 'matomo.php']);
+      _paq.push(['setSiteId', '50']);
+      var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+      g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+    })();
+  </script>
+  <!-- End Matomo Code -->
+
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
