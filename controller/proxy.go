@@ -35,14 +35,24 @@ func ProxyHandler(c *gin.Context) {
 		req.Header[k] = v
 	}
 
-	// strip sensitive headers (e.g. Cloudflare headers)
+	// strip sensitive headers (e.g. Cloudflare, proxy, IP headers)
 	stripHeaders := []string{
+		// Cloudflare headers
 		"Cdn-Loop",
 		"Cf-Connecting-Ip",
 		"Cf-Ipcountry",
 		"Cf-Ray",
 		"Cf-Visitor",
 		"True-Client-Ip",
+		// Proxy/IP headers
+		"X-Forwarded-For",
+		"X-Real-Ip",
+		"X-Forwarded-Host",
+		"X-Forwarded-Proto",
+		"Forwarded",
+		"X-Client-Ip",
+		"X-Cluster-Client-Ip",
+		"X-Original-Forwarded-For",
 	}
 	for _, h := range stripHeaders {
 		req.Header.Del(h)
