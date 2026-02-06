@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/poixeai/proxify/infra/ctx"
 	"github.com/poixeai/proxify/infra/watcher"
@@ -10,8 +12,24 @@ import (
 func Extractor() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		path := c.Request.URL.Path
-		top, sub := util.ExtractRoute(path)
 		query := c.Request.URL.RawQuery
+
+		// Check for direct URL proxy: /https://example.com/path or /http://example.com/path
+		if strings.HasPrefix(path, "/https://") || strings.HasPrefix(path, "/http://") {
+			targetURL := path[1:] // remove leading "/"
+			if query != "" {
+				targetURL = targetURL + "?" + query
+			}
+
+			c.Set(ctx.TopRoute, "")
+			c.Set(ctx.SubPath, "")
+			c.Set(ctx.TargetEndpoint, targetURL)
+			c.Set(ctx.Proxified, true)
+			c.Next()
+			return
+		}
+
+		top, sub := util.ExtractRoute(path)
 
 		if query != "" {
 			if sub == "" {

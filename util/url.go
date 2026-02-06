@@ -17,5 +17,8 @@ func ExtractRoute(path string) (string, string) {
 func JoinURL(base, sub string) string {
 	base = strings.TrimRight(base, "/")
 	sub = strings.TrimLeft(sub, "/")
+	if sub == "" {
+		return base
+	}
 	return base + "/" + sub
 }
