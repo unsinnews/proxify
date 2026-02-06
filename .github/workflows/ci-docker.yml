@@ -7,7 +7,7 @@ on:
       - 'v*'                 
 
 env:
-  IMAGE_NAME: terobox/proxify
+  IMAGE_NAME: unsinnews/proxify
   PLATFORMS: linux/amd64,linux/arm64 # multi-arch support
 
 jobs:
