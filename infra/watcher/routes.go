@@ -12,8 +12,15 @@ import (
 )
 
 var ConfigValue atomic.Value // global config value
+var usingEnvConfig bool      // track if config is from env var
 
 func WatchJSON(file string) {
+	// Skip file watching if using env var config
+	if usingEnvConfig {
+		logger.Info("[routes] using ROUTES env var, file watching disabled")
+		return
+	}
+
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		logger.Errorf("failed to create fsnotify watcher: %v", err)
@@ -48,23 +55,36 @@ func WatchJSON(file string) {
 func InitRoutesWatcher() error {
 	const file = "routes.json"
 
-	cfg, err := config.LoadRoutesConfig(file)
+	// Priority 1: Try to load from ROUTES environment variable
+	cfg, err := config.LoadRoutesFromEnv()
 	if err != nil {
-		if os.IsNotExist(err) {
-			// if file not found, load default config
-			logger.Warnf("[routes.json] not found, loading default config.")
-			cfg = &config.RoutesConfig{
-				Routes: []config.Route{
-					// default routes, add more
-					{Path: "/openai", Target: "https://api.openai.com"},
-				},
+		logger.Errorf("failed to parse ROUTES env var: %v", err)
+		return err
+	}
+
+	if cfg != nil {
+		usingEnvConfig = true
+		logger.Infof("[ROUTES env] loaded successfully (%d routes)", len(cfg.Routes))
+	} else {
+		// Priority 2: Try to load from routes.json file
+		cfg, err = config.LoadRoutesConfig(file)
+		if err != nil {
+			if os.IsNotExist(err) {
+				// if file not found, load default config
+				logger.Warnf("[routes.json] not found, loading default config.")
+				cfg = &config.RoutesConfig{
+					Routes: []config.Route{
+						// default routes, add more
+						{Path: "/openai", Target: "https://api.openai.com"},
+					},
+				}
+			} else {
+				logger.Errorf("failed to load routes config: %v", err)
+				return err
 			}
 		} else {
-			logger.Errorf("failed to load routes config: %v", err)
-			return err
+			logger.Infof("[routes.json] loaded successfully (%d routes)", len(cfg.Routes))
 		}
-	} else {
-		logger.Infof("[routes.json] loaded successfully (%d routes)", len(cfg.Routes))
 	}
 
 	// validate routes
