@@ -35,6 +35,19 @@ func ProxyHandler(c *gin.Context) {
 		req.Header[k] = v
 	}
 
+	// strip sensitive headers (e.g. Cloudflare headers)
+	stripHeaders := []string{
+		"Cdn-Loop",
+		"Cf-Connecting-Ip",
+		"Cf-Ipcountry",
+		"Cf-Ray",
+		"Cf-Visitor",
+		"True-Client-Ip",
+	}
+	for _, h := range stripHeaders {
+		req.Header.Del(h)
+	}
+
 	// create client
 	client := &http.Client{
 		Timeout: 0, // no timeout, let ctx control it
