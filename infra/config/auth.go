@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"net"
 	"os"
 	"strings"
@@ -30,9 +31,17 @@ func LoadAuthConfig() (*AuthConfig, error) {
 				continue
 			}
 
-			// single IP -> /32
+			// single IP -> host mask (/32 for IPv4, /128 for IPv6)
 			if !strings.Contains(item, "/") {
-				item += "/32"
+				ip := net.ParseIP(item)
+				if ip == nil {
+					return nil, fmt.Errorf("invalid ip: %s", item)
+				}
+				if ip.To4() != nil {
+					item += "/32"
+				} else {
+					item += "/128"
+				}
 			}
 
 			_, ipNet, err := net.ParseCIDR(item)

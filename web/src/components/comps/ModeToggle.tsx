@@ -1,7 +1,7 @@
 // src/components/ThemeToggleButton.tsx
 import { Button } from "@/components/ui/button"; 
 import { Sun, Moon, Laptop } from "lucide-react";
-import { useTheme } from "./ThemeProvider";
+import { useTheme } from "./useTheme";
 import { useTranslation } from "react-i18next";
 
 export default function ThemeToggleButton() {

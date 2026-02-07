@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"sync/atomic"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -82,21 +83,19 @@ func applyFlowControl(ctx context.Context, in <-chan chunk) <-chan chunk {
 			rateSmoothing, tailBoost)
 	}
 
-	// Statistics for additional time spent during the tail boost phase
-	var doneSeenAt time.Time
+	// Track when the upstream done signal was first seen.
+	var doneSeenAtUnix atomic.Int64
 
 	// Internal buffer
 	buf := make(chan chunk, dataChanCapacity)
-	doneFlag := false
+	var doneFlag atomic.Bool
 	go func() {
 		defer close(buf)
 		for ck := range in {
 			if DetectDoneSignal(ck.body) {
 				logger.Debug("[FlowControl] Detected done signal from upstream")
-				if doneSeenAt.IsZero() {
-					doneSeenAt = time.Now()
-				}
-				doneFlag = true
+				doneSeenAtUnix.CompareAndSwap(0, time.Now().UnixNano())
+				doneFlag.Store(true)
 			}
 			select {
 			case <-ctx.Done():
@@ -136,8 +135,8 @@ func applyFlowControl(ctx context.Context, in <-chan chunk) <-chan chunk {
 			case ck, ok := <-buf:
 				if !ok {
 					// All chunks have been sent, about to exit the sending goroutine
-					if !doneSeenAt.IsZero() {
-						tailDrain := time.Since(doneSeenAt)
+					if ts := doneSeenAtUnix.Load(); ts > 0 {
+						tailDrain := time.Since(time.Unix(0, ts))
 						logger.Infof("[FlowControl] Tail drain duration tail_drain=%v", tailDrain)
 					}
 					return
@@ -162,7 +161,7 @@ func applyFlowControl(ctx context.Context, in <-chan chunk) <-chan chunk {
 				}
 
 				// Tail sprint: upstream has ended
-				if tailBoost && doneFlag {
+				if tailBoost && doneFlag.Load() {
 					if currentInterval != minInterval {
 						currentInterval = minInterval
 						ticker.Reset(currentInterval)
@@ -189,7 +188,7 @@ func applyFlowControl(ctx context.Context, in <-chan chunk) <-chan chunk {
 				totalChunks++
 
 				// Periodic adjustment
-				if time.Since(lastAdjustTime) >= adjustPeriod && !(tailBoost && doneFlag) && totalChunks > 5 {
+				if time.Since(lastAdjustTime) >= adjustPeriod && !(tailBoost && doneFlag.Load()) && totalChunks > 5 {
 					bufLen := len(buf)
 					elapsed := time.Since(startTime)
 					historicalRate := float64(totalChunks) / elapsed.Seconds() // chunks/s

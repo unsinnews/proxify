@@ -13,6 +13,16 @@ interface ApiEndpoint {
   icon?: React.ReactNode;
 }
 
+interface RouteApiItem {
+  name: string;
+  path: string;
+  target: string;
+}
+
+interface RouteApiResponse {
+  data: RouteApiItem[];
+}
+
 function ApiEndpointCard({ name, path, officialUrl, icon }: ApiEndpoint) {
   return (
     <div className="group relative flex flex-col justify-between rounded-lg border bg-card p-5 text-card-foreground shadow-sm transition-all duration-300 hover:border-primary/60 hover:shadow-md">
@@ -51,9 +61,9 @@ export default function SupportedAPISection() {
 
   useEffect(() => {
     fetch('/api/routes')
-      .then(res => res.json())
-      .then(data => {
-        const formatted = data.data.map((item: any) => ({
+      .then(res => res.json() as Promise<RouteApiResponse>)
+      .then((data) => {
+        const formatted = data.data.map((item) => ({
           name: item.name,
           path: item.path,
           officialUrl: item.target,

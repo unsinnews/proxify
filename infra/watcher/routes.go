@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"sync/atomic"
 
 	"github.com/fsnotify/fsnotify"
@@ -28,21 +29,32 @@ func WatchJSON(file string) {
 	}
 
 	go func() {
-		for event := range watcher.Events {
-			if event.Op&(fsnotify.Write|fsnotify.Create) != 0 {
-				cfg, err := config.LoadRoutesConfig(file)
-				if err != nil {
-					logger.Errorf("[routes.json] file reload failed:", err)
-					continue
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					return
 				}
+				if event.Op&(fsnotify.Write|fsnotify.Create) != 0 {
+					cfg, err := config.LoadRoutesConfig(file)
+					if err != nil {
+						logger.Errorf("[routes.json] file reload failed: %v", err)
+						continue
+					}
 
-				if err := validateRoutes(cfg); err != nil {
-					logger.Errorf("[routes.json] validation failed: %v", err)
-					continue
+					if err := validateRoutes(cfg); err != nil {
+						logger.Errorf("[routes.json] validation failed: %v", err)
+						continue
+					}
+
+					ConfigValue.Store(cfg)
+					logger.Info("[routes.json] file reloaded successfully.")
 				}
-
-				ConfigValue.Store(cfg)
-				logger.Info("[routes.json] file reloaded successfully.")
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					return
+				}
+				logger.Errorf("[routes.json] watch error: %v", err)
 			}
 		}
 	}()
@@ -110,19 +122,35 @@ func GetRoutes() *config.RoutesConfig {
 func validateRoutes(cfg *config.RoutesConfig) error {
 	seen := make(map[string]bool)
 	for _, r := range cfg.Routes {
-		path := r.Path
+		path := strings.TrimSpace(r.Path)
 
 		// 1. check empty
 		if path == "" {
 			return errors.New("invalid route: empty path is not allowed")
 		}
 
-		// 2. check reserved
-		if config.ReservedTopRoutes[path] {
+		// 2. route path must be like "/openai"
+		if !strings.HasPrefix(path, "/") {
+			return fmt.Errorf("invalid route: path '%s' must start with '/'", path)
+		}
+		if strings.Contains(path, "?") {
+			return fmt.Errorf("invalid route: path '%s' must not contain query string", path)
+		}
+
+		top := strings.TrimPrefix(path, "/")
+		if idx := strings.Index(top, "/"); idx >= 0 {
+			top = top[:idx]
+		}
+		if top == "" {
+			return errors.New("invalid route: top-level path segment is required")
+		}
+
+		// 3. check reserved top-level routes like /api
+		if config.ReservedTopRoutes[top] {
 			return fmt.Errorf("invalid route: path '%s' is reserved by system", path)
 		}
 
-		// 3. check duplicate
+		// 4. check duplicate
 		if seen[path] {
 			return fmt.Errorf("invalid route: duplicate path '%s'", path)
 		}
