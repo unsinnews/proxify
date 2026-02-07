@@ -84,7 +84,7 @@
     "supported_api": {
       "title": "广泛兼容的 API 端点",
       "description": "我们致力于兼容所有主流及前沿的 LLM 服务商，仅需一次配置，即可无缝切换。",
-      "extand_button": {
+      "expand_button": {
         "show_more": "查看更多端点",
         "show_less": "收起列表"
       },

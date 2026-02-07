@@ -84,7 +84,7 @@
     "supported_api": {
       "title": "Широкая совместимость API",
       "description": "Мы стремимся поддерживать всех основных и новых поставщиков LLM.",
-      "extand_button": {
+      "expand_button": {
         "show_more": "Показать больше",
         "show_less": "Свернуть"
       },

@@ -2,7 +2,7 @@ package util
 
 import "strings"
 
-// ExtractRoute splits "/openai/v1/chat" → "openai", "v1/chat"
+// ExtractRoute splits "/openai/v1/chat" → "openai", "/v1/chat"
 func ExtractRoute(path string) (string, string) {
 	path = strings.TrimPrefix(path, "/")
 	parts := strings.SplitN(path, "/", 2)
