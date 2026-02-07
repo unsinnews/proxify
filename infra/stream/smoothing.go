@@ -41,18 +41,22 @@ func readUpstreamChunks(ctx context.Context, body io.ReadCloser) <-chan chunk {
 		reader := bufio.NewReader(body)
 		for {
 			line, err := reader.ReadBytes('\n')
-			if err != nil {
-				if err != io.EOF {
-					logger.Errorf("error reading upstream: %v", err)
-				}
+			if err != nil && err != io.EOF {
+				logger.Errorf("error reading upstream: %v", err)
 				return
 			}
 
-			select {
-			case <-ctx.Done():
-				logger.Warn("client disconnected, stop reading upstream")
+			if len(line) > 0 {
+				select {
+				case <-ctx.Done():
+					logger.Warn("client disconnected, stop reading upstream")
+					return
+				case ch <- chunk{body: line}:
+				}
+			}
+
+			if err == io.EOF {
 				return
-			case ch <- chunk{body: line}:
 			}
 		}
 	}()

@@ -90,7 +90,7 @@ export default function SupportedAPISection() {
               onClick={() => setShowAll(!showAll)}
               className="inline-flex h-10 items-center justify-center rounded-md border bg-background px-6 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
             >
-              <span>{showAll ? t("home.supported_api.extand_button.show_less") : t("home.supported_api.extand_button.show_more")}</span>
+              <span>{showAll ? t("home.supported_api.expand_button.show_less") : t("home.supported_api.expand_button.show_more")}</span>
               <ChevronDown
                 className={cn(
                   'ml-2 h-4 w-4 transition-transform duration-300',

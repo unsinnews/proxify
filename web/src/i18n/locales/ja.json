@@ -84,7 +84,7 @@
     "supported_api": {
       "title": "広く互換性のあるAPIエンドポイント",
       "description": "主要および新興のLLMプロバイダをすべてサポートすることを目指しています。設定は一度だけ。",
-      "extand_button": {
+      "expand_button": {
         "show_more": "さらに表示",
         "show_less": "リストを折りたたむ"
       },

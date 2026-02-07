@@ -84,7 +84,7 @@
     "supported_api": {
       "title": "Broadly Compatible API Endpoints",
       "description": "We aim to support all major and emerging LLM providers, enabling seamless switching with a single configuration.",
-      "extand_button": {
+      "expand_button": {
         "show_more": "View More Endpoints",
         "show_less": "Collapse List"
       },

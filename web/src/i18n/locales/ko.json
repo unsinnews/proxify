@@ -84,7 +84,7 @@
     "supported_api": {
       "title": "광범위한 API 호환성",
       "description": "모든 주요 및 신흥 LLM 공급자를 지원하여 한 번의 설정으로 손쉽게 전환할 수 있습니다.",
-      "extand_button": {
+      "expand_button": {
         "show_more": "더 보기",
         "show_less": "목록 접기"
       },
