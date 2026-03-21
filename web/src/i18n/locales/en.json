@@ -1,0 +1,120 @@
+{
+  "common": {
+    "toggle_theme": "Toggle Theme",
+    "switch_language": "Switch Language"
+  },
+  "home": {
+    "navbar": {
+      "home": "Home",
+      "features": "Features",
+      "quick_start": "Quick Start",
+      "supported_api": "Supported APIs",
+      "code_examples": "Code Examples"
+    },
+    "hero": {
+      "slogan": "An open-source, lightweight, and self-hosted reverse proxy gateway for AI APIs",
+      "subtitle": "Proxify supports mainstream model providers such as OpenAI, Anthropic, Gemini, and more.",
+      "get_started": "Get Started",
+      "view_on_github": "View on GitHub",
+      "animation_proxy": "Proxy"
+    },
+    "features": {
+      "title": "Features",
+      "extensibility": {
+        "title": "Powerful Extensibility",
+        "description": "Supports reverse proxying for any website, with special optimizations for LLM APIs (streaming, heartbeats, tail-end sprinting, and controllable worst-case latency)."
+      },
+      "streaming_optimization": {
+        "title": "Streaming Optimization",
+        "description": "Built-in flow controller ensures smooth, natural-feeling output. Supports inserting heartbeats into SSE streams to prevent connection timeouts."
+      },
+      "multi_domain_routing": {
+        "title": "One-Path Multi-Domain Routing",
+        "description": "Route to different upstream services using a single path prefix (e.g., `/openai` → `api.openai.com`), making configuration simple and efficient."
+      },
+      "lightweight": {
+        "title": "Lightweight & High-Concurrency",
+        "description": "Built with Golang for minimal resource consumption. Runs smoothly even on a machine with just 0.5 GB of RAM."
+      },
+      "security": {
+        "title": "Security & Privacy",
+        "description": "Self-hosted deployment ensures your data never passes through third-party servers, guaranteeing privacy and security."
+      },
+      "open_source": {
+        "title": "Open Source & Transparent",
+        "description": "The code is fully open-source, with transparent and auditable logic. Freely modify, extend, and deploy privately to avoid vendor lock-in."
+      },
+      "maintenance": {
+        "title": "Maintained by a Professional Team",
+        "description": "Designed, iterated, and maintained long-term by a team of AI professionals. Contributions (PRs & Issues) are welcome."
+      },
+      "ease_of_use": {
+        "title": "Extremely Easy to Use",
+        "description": "Switching to Proxify is as simple as changing a single line—the Base URL. No other parameter changes are needed."
+      },
+      "tail_end_sprinting": {
+        "title": "Tail-End Sprinting",
+        "description": "Ensures a seamless, smooth output stream while keeping worst-case latency within an acceptable range."
+      },
+      "mit": "This project is licensed under the MIT License"
+    },
+    "quick_start": {
+      "title": "Quick Start",
+      "subtitle": "In just a few simple steps, you can seamlessly connect your existing services to the Proxify proxy.",
+      "step": {
+        "one": {
+          "title": "Identify the Target Service",
+          "description": "Browse our list of supported APIs to find the service you need and its corresponding proxy prefix."
+        },
+        "two": {
+          "title": "Replace the Base URL",
+          "description": "In your code, replace the original API base URL with our proxy address, and append the service prefix identified in the previous step.",
+          "meta": {
+            "origin_address": "Original address:",
+            "replace_with": "Replace with:"
+          }
+        },
+        "three": {
+          "title": "Send the Request",
+          "description": "Everything is ready. Use your existing API key and request parameters to make requests as usual — no other changes are required.",
+          "note": "Your API key, headers, and request body remain exactly the same."
+        }
+      }
+    },
+    "supported_api": {
+      "title": "Broadly Compatible API Endpoints",
+      "description": "We aim to support all major and emerging LLM providers, enabling seamless switching with a single configuration.",
+      "extand_button": {
+        "show_more": "View More Endpoints",
+        "show_less": "Collapse List"
+      },
+      "note": "The route configuration file (routes.json) can be retrieved via API: "
+    },
+    "code_examples": {
+      "title": "Code Examples",
+      "show": {
+        "note": "The example below uses /openai as a sample; other endpoints work similarly.",
+        "style": {
+          "top": "Configure once,",
+          "bottom": "proxy all AI APIs."
+        },
+        "description": "Proxify is an open-source, lightweight reverse proxy service compatible with major AI model providers such as OpenAI, Anthropic, and Gemini.",
+        "get_started": "Get Started"
+      }
+    },
+    "footer": {
+      "slogan": "An open-source, lightweight reverse proxy for multiple AI model providers’ API endpoints.",
+      "project": {
+        "title": "Project",
+        "supported_api": "Supported Endpoints",
+        "free_models": "Free Models",
+        "community": "Community Forum"
+      },
+      "team": {
+        "title": "Team",
+        "about": "About Us",
+        "contact": "Contact Us"
+      }
+    }
+  }
+}

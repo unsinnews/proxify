@@ -1,0 +1,120 @@
+{
+  "common": {
+    "toggle_theme": "切換主題",
+    "switch_language": "切換語言"
+  },
+  "home": {
+    "navbar": {
+      "home": "首頁",
+      "features": "功能特性",
+      "quick_start": "快速開始",
+      "supported_api": "支援端點",
+      "code_examples": "程式範例"
+    },
+    "hero": {
+      "slogan": "一個開源、輕量、自架設的 AI 介面反向代理",
+      "subtitle": "Proxify 支援 OpenAI、Anthropic、Gemini 等主流模型服務商。",
+      "get_started": "開始使用",
+      "view_on_github": "查看原始碼",
+      "animation_proxy": "代理"
+    },
+    "features": {
+      "title": "功能特性",
+      "extensibility": {
+        "title": "強大擴充能力",
+        "description": "支援轉發任意網站的反向代理請求；針對 LLM 大模型 API 做了專項優化（串流、心跳、尾端衝刺、最壞延遲可控）。"
+      },
+      "streaming_optimization": {
+        "title": "串流優化",
+        "description": "內建流控器，輸出平滑自然；可在 SSE 串流中插入心跳訊號，防止連線逾時。"
+      },
+      "multi_domain_routing": {
+        "title": "一鍵多域路由",
+        "description": "透過一級路徑即可路由至不同上游服務，例如 /openai → api.openai.com，設定簡單高效。"
+      },
+      "lightweight": {
+        "title": "輕量高併發",
+        "description": "以 Golang 實作，資源佔用極低；即使僅有 0.5 GB 記憶體也能穩定運行。"
+      },
+      "security": {
+        "title": "安全與隱私",
+        "description": "自架設部署，資料不經第三方伺服器，確保隱私與安全。"
+      },
+      "open_source": {
+        "title": "開源與透明",
+        "description": "程式碼完全開源，邏輯透明可稽核；可自由二次開發與私有化部署，避免供應商鎖定。"
+      },
+      "maintenance": {
+        "title": "專業團隊維護",
+        "description": "由 AI 領域專業團隊設計與長期維護（歡迎提交 PR / Issue）。"
+      },
+      "ease_of_use": {
+        "title": "極致易用",
+        "description": "切換至 Proxify 僅需修改一行 Base URL，無需更動任何其他參數。"
+      },
+      "tail_end_sprinting": {
+        "title": "尾端衝刺",
+        "description": "在確保平順輸出的同時，將最壞延遲控制在可接受範圍內。"
+      },
+      "mit": "本專案採用 MIT 授權條款"
+    },
+    "quick_start": {
+      "title": "快速開始",
+      "subtitle": "只需幾個簡單步驟，即可將現有服務無縫接入 Proxify 代理。",
+      "step": {
+        "one": {
+          "title": "確認目標服務",
+          "description": "瀏覽我們支援的 API 清單，找到所需的服務及其對應的代理前綴。"
+        },
+        "two": {
+          "title": "替換基礎 URL",
+          "description": "在您的程式中，將原始 API 的基礎 URL 替換為 Proxify 的代理地址，並附上先前步驟確定的服務前綴。",
+          "meta": {
+            "origin_address": "原始位址：",
+            "replace_with": "替換為："
+          }
+        },
+        "three": {
+          "title": "發送請求",
+          "description": "一切準備就緒。使用原有的 API 金鑰與請求參數即可正常發送請求，無需任何其他修改。",
+          "note": "您的 API 金鑰、標頭（Header）及主體（Body）等內容皆保持不變。"
+        }
+      }
+    },
+    "supported_api": {
+      "title": "廣泛相容的 API 端點",
+      "description": "我們致力於支援所有主流與新興的 LLM 服務商，只需一次設定即可無縫切換。",
+      "extand_button": {
+        "show_more": "查看更多端點",
+        "show_less": "收起清單"
+      },
+      "note": "端點設定檔 routes.json 可透過 API 取得："
+    },
+    "code_examples": {
+      "title": "程式範例",
+      "show": {
+        "note": "以下以 /openai 為示例，其他端點的用法類似。",
+        "style": {
+          "top": "一次設定，",
+          "bottom": "代理所有 AI API。"
+        },
+        "description": "Proxify 是一個開源、輕量的反向代理服務，支援 OpenAI、Anthropic、Gemini 等主流模型供應商。",
+        "get_started": "開始使用"
+      }
+    },
+    "footer": {
+      "slogan": "一個開源、輕量、自架設的 AI 介面反向代理",
+      "project": {
+        "title": "專案",
+        "supported_api": "支援端點",
+        "free_models": "免費模型",
+        "community": "社群論壇"
+      },
+      "team": {
+        "title": "團隊",
+        "about": "關於我們",
+        "contact": "聯絡我們"
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "common": {
+    "toggle_theme": "テーマを切り替え",
+    "switch_language": "言語を切り替え"
+  },
+  "home": {
+    "navbar": {
+      "home": "ホーム",
+      "features": "機能",
+      "quick_start": "クイックスタート",
+      "supported_api": "対応エンドポイント",
+      "code_examples": "コード例"
+    },
+    "hero": {
+      "slogan": "オープンソースで軽量、自ホスティング可能な AI API リバースプロキシ",
+      "subtitle": "Proxify は OpenAI、Anthropic、Gemini など主要なモデルプロバイダに対応しています。",
+      "get_started": "はじめる",
+      "view_on_github": "GitHubで見る",
+      "animation_proxy": "プロキシ"
+    },
+    "features": {
+      "title": "機能",
+      "extensibility": {
+        "title": "強力な拡張性",
+        "description": "任意のサイトのリバースプロキシをサポート。LLM API 向けにストリーミング、ハートビート、テールスプリント、最悪遅延制御などを最適化。"
+      },
+      "streaming_optimization": {
+        "title": "ストリーミング最適化",
+        "description": "内蔵フローコントローラによりスムーズな出力を実現。SSE ストリームにハートビートを挿入し、接続タイムアウトを防止。"
+      },
+      "multi_domain_routing": {
+        "title": "ワンパス・マルチドメインルーティング",
+        "description": "単一のパスプレフィックス（例：/openai → api.openai.com）で複数の上流サービスにルーティング可能。"
+      },
+      "lightweight": {
+        "title": "軽量・高並行性",
+        "description": "Golang 製でリソース消費が少なく、0.5 GB のメモリでも快適に動作。"
+      },
+      "security": {
+        "title": "セキュリティとプライバシー",
+        "description": "自己ホスティングによりデータは第三者サーバーを経由せず、プライバシーを確保。"
+      },
+      "open_source": {
+        "title": "オープンソースと透明性",
+        "description": "コードは完全に公開され、監査可能。自由に改良・再配布・プライベート展開が可能。"
+      },
+      "maintenance": {
+        "title": "専門チームによる保守",
+        "description": "AI専門チームによって設計・開発され、長期的にメンテナンス。PRやIssueも歓迎。"
+      },
+      "ease_of_use": {
+        "title": "使いやすさ",
+        "description": "Base URLを一行変更するだけでProxifyに切り替え可能。他の設定変更は不要。"
+      },
+      "tail_end_sprinting": {
+        "title": "テールスプリント",
+        "description": "スムーズな出力を保ちながら、最悪遅延を制御可能。"
+      },
+      "mit": "このプロジェクトは MIT ライセンスの下で公開されています。"
+    },
+    "quick_start": {
+      "title": "クイックスタート",
+      "subtitle": "数ステップで既存のサービスを Proxify プロキシにシームレス接続。",
+      "step": {
+        "one": {
+          "title": "ターゲットサービスの確認",
+          "description": "サポートされている API リストを参照し、必要なサービスと対応するプレフィックスを確認します。"
+        },
+        "two": {
+          "title": "ベースURLを置き換え",
+          "description": "コード内で元のAPIベースURLをProxifyのアドレスに置き換え、サービスプレフィックスを追加。",
+          "meta": {
+            "origin_address": "元のアドレス：",
+            "replace_with": "次に置き換え："
+          }
+        },
+        "three": {
+          "title": "リクエストを送信",
+          "description": "既存のAPIキーとリクエストパラメータをそのまま使用してリクエスト可能。追加の変更は不要です。",
+          "note": "APIキー、ヘッダー、ボディはすべて同じです。"
+        }
+      }
+    },
+    "supported_api": {
+      "title": "広く互換性のあるAPIエンドポイント",
+      "description": "主要および新興のLLMプロバイダをすべてサポートすることを目指しています。設定は一度だけ。",
+      "extand_button": {
+        "show_more": "さらに表示",
+        "show_less": "リストを折りたたむ"
+      },
+      "note": "ルート設定ファイル routes.json は API 経由で取得可能："
+    },
+    "code_examples": {
+      "title": "コード例",
+      "show": {
+        "note": "以下の例は /openai を使用しています。他のエンドポイントも同様です。",
+        "style": {
+          "top": "一度設定すれば、",
+          "bottom": "すべてのAI APIをプロキシ可能。"
+        },
+        "description": "Proxify は主要な AI モデルプロバイダと互換性のある軽量リバースプロキシサービスです。",
+        "get_started": "はじめる"
+      }
+    },
+    "footer": {
+      "slogan": "オープンソースで軽量、自ホスティング可能な AI API リバースプロキシ",
+      "project": {
+        "title": "プロジェクト",
+        "supported_api": "対応エンドポイント",
+        "free_models": "無料モデル",
+        "community": "コミュニティフォーラム"
+      },
+      "team": {
+        "title": "チーム",
+        "about": "私たちについて",
+        "contact": "お問い合わせ"
+      }
+    }
+  }
+}

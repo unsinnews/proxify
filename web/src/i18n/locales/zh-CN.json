@@ -1,0 +1,120 @@
+{
+  "common": {
+    "toggle_theme": "切换主题",
+    "switch_language": "切换语言"
+  },
+  "home": {
+    "navbar": {
+      "home": "主页",
+      "features": "功能特性",
+      "quick_start": "快速开始",
+      "supported_api": "支持端口",
+      "code_examples": "代码示例"
+    },
+    "hero": {
+      "slogan": "一个开源、轻量、自托管的 AI 接口反向代理",
+      "subtitle": "Proxify 支持 OpenAI、Anthropic、Gemini 等主流模型厂商。",
+      "get_started": "开始使用",
+      "view_on_github": "查看源码",
+      "animation_proxy": "代理"
+    },
+    "features": {
+      "title": "功能特性",
+      "extensibility": {
+        "title": "强大扩展能力",
+        "description": "支持转发任意网站的反向代理请求；对 LLM 大模型 API 做了专项优化（流式、心跳、尾部冲刺、最坏延迟可控）。"
+      },
+      "streaming_optimization": {
+        "title": "流式优化",
+        "description": "内置流控器，平滑吐字；支持在 SSE 流中插入心跳，防止连接超时。"
+      },
+      "multi_domain_routing": {
+        "title": "一键多域路由",
+        "description": "通过一级路径即可路由到不同上游，例如 /openai → api.openai.com，统一配置简单高效。"
+      },
+      "lightweight": {
+        "title": "轻量高并发",
+        "description": "Golang 实现，资源占用低；0.5 GB 内存也能轻松运行。"
+      },
+      "security": {
+        "title": "安全与隐私",
+        "description": "自托管部署，数据不经过第三方服务器，确保隐私安全。"
+      },
+      "open_source": {
+        "title": "开源与透明",
+        "description": "代码完全开源，逻辑透明可审计；可自由二次开发、私有化部署，避免供应商锁定。"
+      },
+      "maintenance": {
+        "title": "专业团队维护",
+        "description": "由 AI 领域团队设计与迭代，长期维护（欢迎 PR / Issue）。"
+      },
+      "ease_of_use": {
+        "title": "极致易用",
+        "description": "切换到 proxify 只需修改一行 Base URL，其他参数无需改动。"
+      },
+      "tail_end_sprinting": {
+        "title": "尾部冲刺",
+        "description": "在保证丝滑输出的同时，将最坏延迟控制在可接受范围。"
+      },
+      "mit": "本项目采用 MIT 许可证"
+    },
+    "quick_start": {
+      "title": "快速开始",
+      "subtitle": "只需简单几步，即可将现有服务无缝对接到 Proxify 代理。",
+      "step": {
+        "one": {
+          "title": "确定目标服务",
+          "description": "浏览我们支持的 API 列表，找到您需要使用的服务及其对应的代理前缀。"
+        },
+        "two": {
+          "title": "替换基础 URL",
+          "description": "在您的代码中，将原始 API 的基础 URL 替换为我们的代理地址，并附加上一步中确定的服务前缀。",
+          "meta": {
+            "origin_address": "原始地址：",
+            "replace_with": "替换为："
+          }
+        },
+        "three": {
+          "title": "发送请求",
+          "description": "一切准备就绪。使用您原有的 API 密钥和请求参数，像往常一样发起请求即可，无需任何其他更改。",
+          "note": "您的 API 密钥、请求头（Header）和请求体（Body）等所有其他部分都保持不变。"
+        }
+      }
+    },
+    "supported_api": {
+      "title": "广泛兼容的 API 端点",
+      "description": "我们致力于兼容所有主流及前沿的 LLM 服务商，仅需一次配置，即可无缝切换。",
+      "extand_button": {
+        "show_more": "查看更多端点",
+        "show_less": "收起列表"
+      },
+      "note": "端口配置文件 routes.json 可通过接口获取："
+    },
+    "code_examples": {
+      "title": "代码示例",
+      "show": {
+        "note": "示例代码以 /openai 为例，其他端口类似",
+        "style": {
+          "top": "一次配置，",
+          "bottom": "代理所有 AI API。"
+        },
+        "description": "Proxify 是一个开源的轻量级反向代理服务，支持 OpenAI、Anthropic、Gemini 等主流模型厂商。",
+        "get_started": "开始使用"
+      }
+    },
+    "footer": {
+      "slogan": "一个开源、轻量、自托管的 AI 接口反向代理",
+      "project": {
+        "title": "项目",
+        "supported_api": "支持端点",
+        "free_models": "免费模型",
+        "community": "社区论坛"
+      },
+      "team": {
+        "title": "团队",
+        "about": "关于我们",
+        "contact": "联系我们"
+      }
+    }
+  }
+}

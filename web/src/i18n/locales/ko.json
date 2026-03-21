@@ -1,0 +1,120 @@
+{
+  "common": {
+    "toggle_theme": "테마 전환",
+    "switch_language": "언어 전환"
+  },
+  "home": {
+    "navbar": {
+      "home": "홈",
+      "features": "기능",
+      "quick_start": "빠른 시작",
+      "supported_api": "지원 엔드포인트",
+      "code_examples": "코드 예시"
+    },
+    "hero": {
+      "slogan": "오픈소스, 경량, 자체 호스팅 가능한 AI API 리버스 프록시",
+      "subtitle": "Proxify는 OpenAI, Anthropic, Gemini 등 주요 모델 제공업체를 지원합니다.",
+      "get_started": "시작하기",
+      "view_on_github": "GitHub에서 보기",
+      "animation_proxy": "프록시"
+    },
+    "features": {
+      "title": "기능 특성",
+      "extensibility": {
+        "title": "강력한 확장성",
+        "description": "모든 웹사이트의 리버스 프록시 요청을 지원하며, LLM API에 대해 스트리밍, 하트비트, 꼬리 가속, 최악의 지연 제어 등 최적화가 적용되었습니다."
+      },
+      "streaming_optimization": {
+        "title": "스트리밍 최적화",
+        "description": "내장된 흐름 제어기로 부드럽고 자연스러운 출력 제공. SSE 스트림에 하트비트를 삽입하여 연결 시간 초과를 방지합니다."
+      },
+      "multi_domain_routing": {
+        "title": "원패스 멀티 도메인 라우팅",
+        "description": "하나의 경로 접두사(예: /openai → api.openai.com)로 여러 상위 서비스를 라우팅할 수 있어 설정이 간편하고 효율적입니다."
+      },
+      "lightweight": {
+        "title": "경량 및 고성능",
+        "description": "Golang으로 구현되어 리소스 사용량이 적으며, 0.5GB 메모리 환경에서도 원활히 작동합니다."
+      },
+      "security": {
+        "title": "보안 및 개인정보 보호",
+        "description": "자체 호스팅 방식으로 데이터가 제3자 서버를 거치지 않으므로 개인 정보가 안전하게 보호됩니다."
+      },
+      "open_source": {
+        "title": "오픈소스 및 투명성",
+        "description": "코드는 완전히 공개되어 있으며, 투명하고 검증 가능한 구조입니다. 자유롭게 수정·확장·배포하여 벤더 종속을 피할 수 있습니다."
+      },
+      "maintenance": {
+        "title": "전문 팀 유지보수",
+        "description": "AI 전문가 팀이 설계하고 장기적으로 유지보수합니다. PR 및 Issue 환영합니다."
+      },
+      "ease_of_use": {
+        "title": "간편한 사용성",
+        "description": "Proxify로 전환하려면 Base URL 한 줄만 변경하면 됩니다. 다른 매개변수는 수정할 필요가 없습니다."
+      },
+      "tail_end_sprinting": {
+        "title": "꼬리 가속",
+        "description": "출력 스트림을 부드럽게 유지하면서 최악의 지연을 제어하여 안정적인 응답을 보장합니다."
+      },
+      "mit": "이 프로젝트는 MIT 라이선스에 따라 배포됩니다."
+    },
+    "quick_start": {
+      "title": "빠른 시작",
+      "subtitle": "몇 단계만 거치면 기존 서비스를 Proxify 프록시에 손쉽게 연결할 수 있습니다.",
+      "step": {
+        "one": {
+          "title": "대상 서비스 선택",
+          "description": "지원되는 API 목록을 살펴보고, 필요한 서비스와 해당 프록시 접두사를 확인하세요."
+        },
+        "two": {
+          "title": "기본 URL 교체",
+          "description": "코드에서 기존 API 기본 URL을 Proxify 주소로 바꾸고, 앞서 찾은 서비스 접두사를 추가하세요.",
+          "meta": {
+            "origin_address": "기존 주소:",
+            "replace_with": "다음으로 교체:"
+          }
+        },
+        "three": {
+          "title": "요청 전송",
+          "description": "이제 준비가 완료되었습니다. 기존의 API 키와 요청 매개변수를 그대로 사용하여 요청을 보내면 됩니다. 다른 변경은 필요 없습니다.",
+          "note": "API 키, 헤더, 요청 본문은 모두 동일하게 유지됩니다."
+        }
+      }
+    },
+    "supported_api": {
+      "title": "광범위한 API 호환성",
+      "description": "모든 주요 및 신흥 LLM 공급자를 지원하여 한 번의 설정으로 손쉽게 전환할 수 있습니다.",
+      "extand_button": {
+        "show_more": "더 보기",
+        "show_less": "목록 접기"
+      },
+      "note": "routes.json 구성 파일은 API를 통해 가져올 수 있습니다:"
+    },
+    "code_examples": {
+      "title": "코드 예시",
+      "show": {
+        "note": "아래 예시는 /openai를 기준으로 작성되었습니다. 다른 엔드포인트도 동일한 방식으로 작동합니다.",
+        "style": {
+          "top": "한 번의 설정으로,",
+          "bottom": "모든 AI API를 프록시합니다."
+        },
+        "description": "Proxify는 OpenAI, Anthropic, Gemini 등 주요 AI 모델 제공업체와 호환되는 오픈소스 경량 리버스 프록시 서비스입니다.",
+        "get_started": "시작하기"
+      }
+    },
+    "footer": {
+      "slogan": "오픈소스, 경량, 자체 호스팅 가능한 AI API 리버스 프록시",
+      "project": {
+        "title": "프로젝트",
+        "supported_api": "지원 엔드포인트",
+        "free_models": "무료 모델",
+        "community": "커뮤니티 포럼"
+      },
+      "team": {
+        "title": "팀",
+        "about": "회사 소개",
+        "contact": "문의하기"
+      }
+    }
+  }
+}

@@ -1,0 +1,125 @@
+name: CI-Build-and-Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'    
+
+env:
+  APP_NAME: proxify
+  REMOTE_DIR: /www/wwwroot/proxify.poixe.com/ci
+  PROJECT_SUBDIR: backend
+
+jobs:
+# --------------------------------------------------------------- Build & Release
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ github.ref_name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # ---- ensure run is based on tag
+      - name: Ensure run is based on tag
+        run: |
+          echo "GITHUB_REF=$GITHUB_REF"
+          if [[ "$GITHUB_REF" != refs/tags/* ]]; then
+            echo "[ERROR] This workflow must be triggered from a Git tag (refs/tags/v*)"
+            exit 1
+          fi
+
+      # ---- set up Go
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # ---- run build.sh (amd64 + arm64)
+      - name: Build linux/amd64 and linux/arm64
+        run: |
+          chmod +x ./build.sh
+
+          echo "[INFO] Build amd64..."
+          export GOOS=linux
+          export GOARCH=amd64
+          export CGO_ENABLED=0
+          ./build.sh
+          cp -f "./bin/${APP_NAME}" "./bin/${APP_NAME}-linux-amd64"
+
+          echo "[INFO] Build arm64..."
+          export GOARCH=arm64
+          ./build.sh
+          cp -f "./bin/${APP_NAME}" "./bin/${APP_NAME}-linux-arm64"
+
+          # Restore default deploy binary name to amd64 (deploy.sh 继续用它)
+          cp -f "./bin/${APP_NAME}-linux-amd64" "./bin/${APP_NAME}"
+
+      # ---- ensure build output
+      - name: Verify build output
+        run: |
+          echo "[INFO] Listing ./bin contents:"
+          ls -lah ./bin
+          if [ ! -f "./bin/${APP_NAME}" ]; then
+            echo "[ERROR] Binary not found!"
+            exit 1
+          fi
+
+      # ---- create GitHub Release
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: |
+            ./bin/${{ env.APP_NAME }}
+            ./bin/${{ env.APP_NAME }}-linux-amd64
+            ./bin/${{ env.APP_NAME }}-linux-arm64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+
+# --------------------------------------------------------------- Deploy
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: success()
+    concurrency: production
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            deploy.sh
+          sparse-checkout-cone-mode: false
+
+      - name: Upload deploy.sh
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host:     ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key:      ${{ secrets.SSH_PRIVATE_KEY }}
+          port:     ${{ secrets.SSH_PORT || '22' }}
+          source:   "deploy.sh"
+          target:   "${{ env.REMOTE_DIR }}/${{ env.PROJECT_SUBDIR }}"
+          overwrite: true
+
+      - name: Run deploy.sh remotely
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host:     ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key:      ${{ secrets.SSH_PRIVATE_KEY }}
+          port:     ${{ secrets.SSH_PORT || '22' }}
+          envs:     APP_NAME,REMOTE_DIR,PROJECT_SUBDIR
+          script: |
+            cd "${REMOTE_DIR}/${PROJECT_SUBDIR}"
+            chmod +x deploy.sh
+            VERSION="${{ needs.build.outputs.tag }}"
+            ./deploy.sh "$APP_NAME" "$VERSION"

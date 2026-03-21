@@ -1,0 +1,15 @@
+# env file
+.env
+
+# log files
+*.log
+/log/
+
+# config
+routes.json
+
+# note
+/_note
+
+# go build output
+/bin
