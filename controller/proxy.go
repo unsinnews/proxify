@@ -14,6 +14,13 @@ import (
 	"github.com/poixeai/proxify/util"
 )
 
+var strippedProxyRequestHeaders = map[string]struct{}{
+	"x-forwarded-for":  {},
+	"true-client-ip":   {},
+	"x-real-ip":        {},
+	"cf-connecting-ip": {},
+}
+
 func ProxyHandler(c *gin.Context) {
 	// build target URL
 	targetEndpoint := c.GetString(ctx.TargetEndpoint)
@@ -30,10 +37,7 @@ func ProxyHandler(c *gin.Context) {
 		return
 	}
 
-	// copy headers
-	for k, v := range c.Request.Header {
-		req.Header[k] = v
-	}
+	copyRequestHeaders(req.Header, c.Request.Header)
 
 	// create client
 	client := &http.Client{
@@ -73,6 +77,20 @@ func ProxyHandler(c *gin.Context) {
 	} else {
 		io.Copy(c.Writer, resp.Body)
 	}
+}
+
+func copyRequestHeaders(dst, src http.Header) {
+	for k, v := range src {
+		if shouldStripProxyRequestHeader(k) {
+			continue
+		}
+		dst[k] = append([]string(nil), v...)
+	}
+}
+
+func shouldStripProxyRequestHeader(header string) bool {
+	_, exists := strippedProxyRequestHeaders[strings.ToLower(header)]
+	return exists
 }
 
 // stream support SSE / chunked
