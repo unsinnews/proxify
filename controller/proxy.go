@@ -15,7 +15,9 @@ import (
 )
 
 var strippedProxyRequestHeaders = map[string]struct{}{
-	"true-client-ip": {},
+	"true-client-ip":   {},
+	"x-real-ip":        {},
+	"cf-connecting-ip": {},
 }
 
 func ProxyHandler(c *gin.Context) {

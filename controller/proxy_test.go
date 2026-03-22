@@ -51,12 +51,12 @@ func TestProxyHandlerStripsTrueClientIPAndFirstForwardedIP(t *testing.T) {
 		t.Fatalf("expected True-Client-Ip to be stripped, got %v", values)
 	}
 
-	for header, want := range map[string]string{
-		"X-Real-IP":        "198.51.100.9",
-		"CF-Connecting-IP": "198.51.100.10",
+	for _, header := range []string{
+		"X-Real-IP",
+		"CF-Connecting-IP",
 	} {
-		if got := upstreamHeaders.Get(header); got != want {
-			t.Fatalf("expected %s to be preserved as %q, got %q", header, want, got)
+		if values := upstreamHeaders.Values(header); len(values) != 0 {
+			t.Fatalf("expected %s to be stripped, got %v", header, values)
 		}
 	}
 }
