@@ -27,7 +27,24 @@ web/coverage/
 /_note
 
 # github
+.github/
+.vscode/
 .git
 .gitignore
+.DS_Store
+.gocache/
+.gomodcache/
+.gopath/
+assets/
+README_CN.md
+docker-compose.yml
+build.sh
+deploy.sh
+routes.json.example
+**/*_test.go
+web/README.md
+web/deploy.sh
+web/components.json
+web/.env.example
 README.md
 LICENSE
