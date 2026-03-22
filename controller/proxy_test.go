@@ -30,6 +30,11 @@ func TestProxyHandlerStripsClientIPsFromForwardingHeaders(t *testing.T) {
 	c.Request.Header.Set("True-Client-Ip", "198.51.100.8")
 	c.Request.Header.Set("X-Real-IP", "74.220.48.243")
 	c.Request.Header.Set("CF-Connecting-IP", "74.220.48.243")
+	c.Request.Header.Set("CF-IPCountry", "US")
+	c.Request.Header.Set("CF-Ray", "9e05b3272e1b9314-PDX")
+	c.Request.Header.Set("CF-Visitor", "{\"scheme\":\"https\"}")
+	c.Request.Header.Set("CF-EW-Via", "15")
+	c.Request.Header.Set("CDN-Loop", "cloudflare; loops=2; subreqs=1")
 	c.Set(routectx.TargetEndpoint, upstream.URL)
 	c.Set(routectx.SubPath, "/v1/chat/completions")
 
@@ -54,6 +59,11 @@ func TestProxyHandlerStripsClientIPsFromForwardingHeaders(t *testing.T) {
 	for _, header := range []string{
 		"X-Real-IP",
 		"CF-Connecting-IP",
+		"CF-IPCountry",
+		"CF-Ray",
+		"CF-Visitor",
+		"CF-EW-Via",
+		"CDN-Loop",
 	} {
 		if values := upstreamHeaders.Values(header); len(values) != 0 {
 			t.Fatalf("expected %s to be stripped, got %v", header, values)

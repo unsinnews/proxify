@@ -18,6 +18,11 @@ var strippedProxyRequestHeaders = map[string]struct{}{
 	"true-client-ip":   {},
 	"x-real-ip":        {},
 	"cf-connecting-ip": {},
+	"cf-ipcountry":     {},
+	"cf-ray":           {},
+	"cf-visitor":       {},
+	"cf-ew-via":        {},
+	"cdn-loop":         {},
 }
 
 var xForwardedForStripSourceHeaders = []string{
