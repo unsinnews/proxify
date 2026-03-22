@@ -15,7 +15,6 @@ import (
 )
 
 var strippedProxyRequestHeaders = map[string]struct{}{
-	"x-forwarded-for": {},
 	"true-client-ip": {},
 }
 
@@ -79,11 +78,38 @@ func ProxyHandler(c *gin.Context) {
 
 func copyRequestHeaders(dst, src http.Header) {
 	for k, v := range src {
+		if strings.EqualFold(k, "X-Forwarded-For") {
+			if sanitized := stripFirstXForwardedForIP(v); len(sanitized) > 0 {
+				dst[k] = sanitized
+			}
+			continue
+		}
+
 		if shouldStripProxyRequestHeader(k) {
 			continue
 		}
 		dst[k] = append([]string(nil), v...)
 	}
+}
+
+func stripFirstXForwardedForIP(values []string) []string {
+	var parts []string
+
+	for _, value := range values {
+		for _, part := range strings.Split(value, ",") {
+			part = strings.TrimSpace(part)
+			if part == "" {
+				continue
+			}
+			parts = append(parts, part)
+		}
+	}
+
+	if len(parts) <= 1 {
+		return nil
+	}
+
+	return []string{strings.Join(parts[1:], ", ")}
 }
 
 func shouldStripProxyRequestHeader(header string) bool {

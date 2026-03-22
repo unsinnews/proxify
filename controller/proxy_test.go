@@ -10,7 +10,7 @@ import (
 	routectx "github.com/poixeai/proxify/infra/ctx"
 )
 
-func TestProxyHandlerStripsForwardingHeaders(t *testing.T) {
+func TestProxyHandlerStripsTrueClientIPAndFirstForwardedIP(t *testing.T) {
 	t.Helper()
 	gin.SetMode(gin.TestMode)
 
@@ -26,7 +26,7 @@ func TestProxyHandlerStripsForwardingHeaders(t *testing.T) {
 	c, _ := gin.CreateTestContext(recorder)
 	c.Request = httptest.NewRequest(http.MethodPost, "/openai/v1/chat/completions", http.NoBody)
 	c.Request.Header.Set("Authorization", "Bearer test-token")
-	c.Request.Header.Set("X-Forwarded-For", "198.51.100.7")
+	c.Request.Header.Set("X-Forwarded-For", "198.51.100.7, 198.51.100.11, 198.51.100.12")
 	c.Request.Header.Set("True-Client-Ip", "198.51.100.8")
 	c.Request.Header.Set("X-Real-IP", "198.51.100.9")
 	c.Request.Header.Set("CF-Connecting-IP", "198.51.100.10")
@@ -43,13 +43,12 @@ func TestProxyHandlerStripsForwardingHeaders(t *testing.T) {
 		t.Fatalf("expected Authorization to be preserved, got %q", got)
 	}
 
-	for _, header := range []string{
-		"X-Forwarded-For",
-		"True-Client-Ip",
-	} {
-		if values := upstreamHeaders.Values(header); len(values) != 0 {
-			t.Fatalf("expected %s to be stripped, got %v", header, values)
-		}
+	if got := upstreamHeaders.Get("X-Forwarded-For"); got != "198.51.100.11, 198.51.100.12" {
+		t.Fatalf("expected X-Forwarded-For to drop the first IP, got %q", got)
+	}
+
+	if values := upstreamHeaders.Values("True-Client-Ip"); len(values) != 0 {
+		t.Fatalf("expected True-Client-Ip to be stripped, got %v", values)
 	}
 
 	for header, want := range map[string]string{
@@ -59,5 +58,17 @@ func TestProxyHandlerStripsForwardingHeaders(t *testing.T) {
 		if got := upstreamHeaders.Get(header); got != want {
 			t.Fatalf("expected %s to be preserved as %q, got %q", header, want, got)
 		}
+	}
+}
+
+func TestCopyRequestHeadersRemovesSingleForwardedIP(t *testing.T) {
+	dst := http.Header{}
+	src := http.Header{}
+	src.Set("X-Forwarded-For", "198.51.100.7")
+
+	copyRequestHeaders(dst, src)
+
+	if values := dst.Values("X-Forwarded-For"); len(values) != 0 {
+		t.Fatalf("expected X-Forwarded-For to be removed when only one IP is present, got %v", values)
 	}
 }
