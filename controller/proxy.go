@@ -15,6 +15,7 @@ import (
 )
 
 var strippedProxyRequestHeaders = map[string]struct{}{
+	"x-forwarded-for": {},
 	"true-client-ip": {},
 }
 

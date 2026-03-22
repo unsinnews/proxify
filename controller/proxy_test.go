@@ -10,7 +10,7 @@ import (
 	routectx "github.com/poixeai/proxify/infra/ctx"
 )
 
-func TestProxyHandlerStripsOnlyTrueClientIPHeader(t *testing.T) {
+func TestProxyHandlerStripsForwardingHeaders(t *testing.T) {
 	t.Helper()
 	gin.SetMode(gin.TestMode)
 
@@ -43,13 +43,17 @@ func TestProxyHandlerStripsOnlyTrueClientIPHeader(t *testing.T) {
 		t.Fatalf("expected Authorization to be preserved, got %q", got)
 	}
 
-	if values := upstreamHeaders.Values("True-Client-Ip"); len(values) != 0 {
-		t.Fatalf("expected True-Client-Ip to be stripped, got %v", values)
+	for _, header := range []string{
+		"X-Forwarded-For",
+		"True-Client-Ip",
+	} {
+		if values := upstreamHeaders.Values(header); len(values) != 0 {
+			t.Fatalf("expected %s to be stripped, got %v", header, values)
+		}
 	}
 
 	for header, want := range map[string]string{
-		"X-Forwarded-For": "198.51.100.7",
-		"X-Real-IP":       "198.51.100.9",
+		"X-Real-IP":        "198.51.100.9",
 		"CF-Connecting-IP": "198.51.100.10",
 	} {
 		if got := upstreamHeaders.Get(header); got != want {
