@@ -10,7 +10,7 @@ import (
 	routectx "github.com/poixeai/proxify/infra/ctx"
 )
 
-func TestProxyHandlerStripsTrueClientIPAndFirstForwardedIP(t *testing.T) {
+func TestProxyHandlerStripsClientIPsFromForwardingHeaders(t *testing.T) {
 	t.Helper()
 	gin.SetMode(gin.TestMode)
 
@@ -26,10 +26,10 @@ func TestProxyHandlerStripsTrueClientIPAndFirstForwardedIP(t *testing.T) {
 	c, _ := gin.CreateTestContext(recorder)
 	c.Request = httptest.NewRequest(http.MethodPost, "/openai/v1/chat/completions", http.NoBody)
 	c.Request.Header.Set("Authorization", "Bearer test-token")
-	c.Request.Header.Set("X-Forwarded-For", "198.51.100.7, 198.51.100.11, 198.51.100.12")
+	c.Request.Header.Set("X-Forwarded-For", "162.158.187.42, 10.18.133.157,74.220.48.243, 74.220.48.243")
 	c.Request.Header.Set("True-Client-Ip", "198.51.100.8")
-	c.Request.Header.Set("X-Real-IP", "198.51.100.9")
-	c.Request.Header.Set("CF-Connecting-IP", "198.51.100.10")
+	c.Request.Header.Set("X-Real-IP", "74.220.48.243")
+	c.Request.Header.Set("CF-Connecting-IP", "74.220.48.243")
 	c.Set(routectx.TargetEndpoint, upstream.URL)
 	c.Set(routectx.SubPath, "/v1/chat/completions")
 
@@ -43,8 +43,8 @@ func TestProxyHandlerStripsTrueClientIPAndFirstForwardedIP(t *testing.T) {
 		t.Fatalf("expected Authorization to be preserved, got %q", got)
 	}
 
-	if got := upstreamHeaders.Get("X-Forwarded-For"); got != "198.51.100.11, 198.51.100.12" {
-		t.Fatalf("expected X-Forwarded-For to drop the first IP, got %q", got)
+	if got := upstreamHeaders.Get("X-Forwarded-For"); got != "10.18.133.157" {
+		t.Fatalf("expected X-Forwarded-For to drop the first IP and known client IPs, got %q", got)
 	}
 
 	if values := upstreamHeaders.Values("True-Client-Ip"); len(values) != 0 {
@@ -70,5 +70,19 @@ func TestCopyRequestHeadersRemovesSingleForwardedIP(t *testing.T) {
 
 	if values := dst.Values("X-Forwarded-For"); len(values) != 0 {
 		t.Fatalf("expected X-Forwarded-For to be removed when only one IP is present, got %v", values)
+	}
+}
+
+func TestCopyRequestHeadersRemovesClientIPDuplicatesFromForwardedChain(t *testing.T) {
+	dst := http.Header{}
+	src := http.Header{}
+	src.Set("X-Forwarded-For", "162.158.187.42, 10.18.133.157,74.220.48.243, 74.220.48.243")
+	src.Set("X-Real-IP", "74.220.48.243")
+	src.Set("CF-Connecting-IP", "74.220.48.243")
+
+	copyRequestHeaders(dst, src)
+
+	if got := dst.Get("X-Forwarded-For"); got != "10.18.133.157" {
+		t.Fatalf("expected X-Forwarded-For to remove known client IPs, got %q", got)
 	}
 }

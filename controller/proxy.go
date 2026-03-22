@@ -20,6 +20,12 @@ var strippedProxyRequestHeaders = map[string]struct{}{
 	"cf-connecting-ip": {},
 }
 
+var xForwardedForStripSourceHeaders = []string{
+	"True-Client-Ip",
+	"X-Real-IP",
+	"CF-Connecting-IP",
+}
+
 func ProxyHandler(c *gin.Context) {
 	// build target URL
 	targetEndpoint := c.GetString(ctx.TargetEndpoint)
@@ -79,9 +85,11 @@ func ProxyHandler(c *gin.Context) {
 }
 
 func copyRequestHeaders(dst, src http.Header) {
+	xForwardedForStripValues := collectXForwardedForStripValues(src)
+
 	for k, v := range src {
 		if strings.EqualFold(k, "X-Forwarded-For") {
-			if sanitized := stripFirstXForwardedForIP(v); len(sanitized) > 0 {
+			if sanitized := stripClientIPsFromXForwardedFor(v, xForwardedForStripValues); len(sanitized) > 0 {
 				dst[k] = sanitized
 			}
 			continue
@@ -94,7 +102,40 @@ func copyRequestHeaders(dst, src http.Header) {
 	}
 }
 
-func stripFirstXForwardedForIP(values []string) []string {
+func collectXForwardedForStripValues(src http.Header) map[string]struct{} {
+	stripValues := make(map[string]struct{}, len(xForwardedForStripSourceHeaders))
+
+	for _, header := range xForwardedForStripSourceHeaders {
+		for _, value := range splitHeaderValues(src.Values(header)) {
+			stripValues[strings.ToLower(value)] = struct{}{}
+		}
+	}
+
+	return stripValues
+}
+
+func stripClientIPsFromXForwardedFor(values []string, stripValues map[string]struct{}) []string {
+	parts := splitHeaderValues(values)
+	if len(parts) <= 1 {
+		return nil
+	}
+
+	filtered := make([]string, 0, len(parts)-1)
+	for _, part := range parts[1:] {
+		if _, exists := stripValues[strings.ToLower(part)]; exists {
+			continue
+		}
+		filtered = append(filtered, part)
+	}
+
+	if len(filtered) == 0 {
+		return nil
+	}
+
+	return []string{strings.Join(filtered, ", ")}
+}
+
+func splitHeaderValues(values []string) []string {
 	var parts []string
 
 	for _, value := range values {
@@ -107,11 +148,7 @@ func stripFirstXForwardedForIP(values []string) []string {
 		}
 	}
 
-	if len(parts) <= 1 {
-		return nil
-	}
-
-	return []string{strings.Join(parts[1:], ", ")}
+	return parts
 }
 
 func shouldStripProxyRequestHeader(header string) bool {
